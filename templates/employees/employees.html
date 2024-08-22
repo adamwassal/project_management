@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<table>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="title-info">
+            <p>Employees</p>
+            <div>
+                <input type="text" id="search_input" onkeyup="performSearch()" placeholder="Search..">
+            </div>
+            <div id="user_total" style="text-align: center;background-color: cadetblue; padding:10px">{{employee_count}}
+                Employees</div>
+
+            <i class="material-icons">group</i>
+        </div>
+        <a href="{% url 'create_employee' %}" class="ud">Add Employee</a>
+        {% if object_list %}
+        <center><select name="selection" id="selection"
+                style="color: rgb(255, 255, 255); cursor:pointer; background:rgb(19, 15, 128); margin-top: 20px; padding: 2px 20px">
+                <option value="no" selected="selected" style="color: rgb(255, 255, 255);">---------</option>
+                <option value="delete" style="color: rgb(255, 255, 255);">Delete</option>
+            </select>
+            <button type="submit" style="padding: 10px; cursor:pointer; background-color: red;"
+                class="ud">Confirm</button>
+        </center>
+        {% endif %}
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="check_all">
+                </th>
+                <th>Name</th>
+                <th>Job</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Birth Day</th>
+                <th>Mobile</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            {% for i in object_list %}
+            <tr>
+                <td><input type="checkbox" id="employees" name="employees" value="{{ i.id }}"></td>
+                <td class="name">{{i.name}}</td>
+                <td class="job">{{i.job}}</td>
+                <td>{{i.address}}</td>
+                <td>{{i.email}}</td>
+                <td>{{i.birth}}</td>
+                <td>{{i.mobile1}}</td>
+                <td style="display: flex; justify-content: center;">
+                    <a href="{% url 'detail_employee' pk=i.id %}" class="count"
+                        style="text-decoration: none;">Details</a>
+                </td>
+                {% empty %}
+                <td colspan="7">No data</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+{% else %}
+<script>
+    alert('You don\' admin user')
+    window.location.href = '/'
+</script>
+{% endif %}
+
+<script>
+    const checkbox = document.getElementById('check_all')
+    const checkboxs = document.querySelectorAll('#employees')
+
+    checkbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            for (var i = 0; i < checkboxs.length; i++) {
+                checkboxs[i].checked = true
+            }
+
+        } else {
+            for (var i = 0; i < checkboxs.length; i++) {
+                checkboxs[i].checked = false
+            }
+
+        }
+    })
+
+    function performSearch() {
+        var input, filter, tbody, tr, td, i, txtValue;
+        input = document.getElementById("search_input");
+        filter = input.value.toUpperCase();
+        tbody = document.getElementById("tbody");
+        tr = tbody.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+
+            td = tr[i].getElementsByClassName("name")[0]; // استخدام getElementsByClassName للحصول على العنصر المناسب
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+    }
+</script>
+{% endblock %}

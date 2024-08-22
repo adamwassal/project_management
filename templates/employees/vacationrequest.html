@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    {% if not data %}
+    <style>
+        .form-group .form-error .errorlist li {
+            color: red;
+        }
+
+        label[for='id_accept'] {
+            display: none;
+        }
+    </style>
+
+    <div class="form-container">
+
+        <form method="POST" enctype="multipart/form-data">
+            <h2 style="color: black;">Create Vacation request</h2>
+            <br>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-error">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" class="ud" value="Create" />
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('user').value = "{{user.username}}"
+        document.getElementById('email').value = "{{user.email}}"
+    </script>
+    {% else %}
+    <table>
+        <div class="title-info" style="display: flex; justify-content:center">
+            <p>
+                Your Vacation Reaquest</p>
+        </div>
+        <thead>
+            {% for i in data %}
+            <tr>
+                <th>Username</th>
+                <td>{{i.user}}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{i.date}}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{i.email}}</td>
+            </tr>
+            <tr>
+                <th>Accepted</th>
+                <td>{{i.accept|default:'Not accepted'}}</td>
+            </tr>
+            <tr>
+                <td colspan="100%">
+                    <a href="{% url 'vacationdelete' pk=i.id %}" class="ud btn-red">Delete Request</a>
+                </td>
+            </tr>
+
+            {% if i.accept %}
+               <h1>Your Request Accepted</h1>
+            {% endif %}
+
+
+            {% if i.date == now %}
+               <script>
+                    window.location.href = '{% url "deletevacation" pk=i.id %}'
+               </script>
+            {% endif %}
+            {% endfor %}
+        </thead>
+    </table>
+    {% endif %}
+
+
+
+</center>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<center>
+    <style>
+        .form-group .form-error .errorlist li {
+            color: red;
+        }
+        a {
+            color: black;
+        }
+        .form-group a {
+            font-size: 8px;
+        }
+    </style>
+    <div class="form-container">
+
+        <form method="POST" enctype="multipart/form-data">
+            <h2 style="color: black;">Update "{{update.company_name}}" Company</h2>
+            <br>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-error">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" class="ud" value="Update" />
+        </form>
+    </div>
+
+    {% else %}
+    <script>
+        alert('You don\' admin user')
+        window.location.href = '/'
+    </script>
+</center>
+{% endif %}
+
+{% endblock %}

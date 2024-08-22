@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    td,
+    th {
+        padding: 10px;
+    }
+</style>
+<div class="data-info">
+    <div class="form-container" style="display: flex; flex-direction: column; align-items: center;">
+        <div
+            style="display: flex;background-color: white; border-radius: 50%; flex-direction: column; align-items: center;">
+            <img src="{% static 'images/user.png' %}" alt="Profile" width="100">
+            <h2 style="color: black;">{{u.username}}</h2>
+        </div>
+        <div style="margin-top: 10px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{u.username|default:'None'}}</td>
+                    </tr>
+                    <tr>
+                        <th>First name</th>
+                        <td>{{u.first_name|default:'None'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Last name</th>
+                        <td>{{u.last_name|default:'None'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{u.email|default:'None'}}</td>
+                    </tr> 
+                </thead>
+            </table>
+            <a href="{% url 'all_users' %}" class="ud">Back</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

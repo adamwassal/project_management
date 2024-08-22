@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<a href="{% url 'employees' %}" class="btn-green"><-Back</a>
+        <table>
+            <div class="title-info" style="display: flex; justify-content:center">
+                <p><mark
+                        style="border-radius: 10px; padding:10px; font-size: 22px; background-color: #123;">{{detail.name}}</mark>
+                    employee Deatils</p>
+            </div>
+            <thead>
+                <tr>
+                    <th>Birth Day</th>
+                    <td>{{detail.birth}}</td>
+                </tr>
+                <tr>
+                    <th>Mobile 1</th>
+                    <td>{{detail.mobile1}}</td>
+                </tr>
+                <tr>
+                    <th>Mobile 2</th>
+                    <td>{{detail.mobile2|default:"Not Set"}}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{detail.email}}</td>
+                </tr>
+                <tr>
+                    <th>Job</th>
+                    <td>{{detail.job}}</td>
+                </tr>
+                <tr>
+                    <th>Start date</th>
+                    <td>{{detail.start_date}}</td>
+                </tr>
+                <tr>
+                    <th>Employment type</th>
+                    <td>{{detail.employment_type}}</td>
+                </tr>
+                <tr>
+                    <th>Work schedule</th>
+                    <td>{{detail.work_schedule}} h</td>
+                </tr>
+                <tr>
+                    <th>Salary</th>
+                    <td>{{detail.salary}} EGP</td>
+                </tr>
+
+                <tr>
+                    <th>CV</th>
+                    {% if detail.cv %}
+                    <td><img src="{{detail.cv.url}}" alt="" width="300"></td>
+                    {% else %}
+                    <td>Not Set</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>
+                        Address
+                    </th>
+                    <td>{{detail.address}}</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <a href="{% url 'delete_employee' pk=detail.id %}" class="btn btn-red">Delete</a>
+                        <a href="{% url 'update_employee' pk=detail.id %}" class="btn btn-blue">Update</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        {% else %}
+        <script>
+            alert('You don\' admin user')
+            window.location.href = '/'
+        </script>
+        {% endif %}
+        {% endblock %}

@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #123;
+            color: white;
+        }
+
+        .form-container {
+            border-radius: 10% 5%;
+            background-color: #11224bff;
+            position: relative;
+        }
+
+        .form-group label {
+            color: white;
+        }
+
+        div h2 {
+            font-size: 52px;
+            margin: 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        div label {
+            font-size: 27px;
+
+        }
+
+        div button {
+            padding: 10px;
+            width: 40%;
+            cursor: pointer;
+            font-size: 22px;
+            background-color: #123;
+            outline: none;
+            border: none;
+            color: white;
+
+        }
+
+        div button:hover {
+            border: solid rgb(0, 0, 0) 0.1px;
+        }
+
+
+        div .helptext {
+            display: none;
+        }
+
+        div li {
+            display: none;
+        }
+
+        a {
+            display: flex;
+            justify-content: center;
+            font-size: 22px;
+            margin-top: 20px;
+            display: flex;
+        }
+
+        #show {
+            display: flex;
+            justify-content: center;
+        }
+        .submit {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        input, select, option {
+            font-size: 22px;
+        }
+
+        .btn-green {
+            position: absolute;
+            top: 360px;
+            right: 0;
+            height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        @media screen and (max-width:530px) {
+            .btn-green {
+                top: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% if not user.is_authenticated %}
+    <form action="." method="post">
+        <div class="form-container">
+            <h2>Sign Up</h2>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-error">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <a href="#" onclick="show_hide()" id="show" class="material-icons btn-green"
+                style="text-decoration:none">visibility</a>
+            <div class="submit">
+                <button type="submit">Sign up</button>
+            </div>
+            <a href="{% url 'login' %}">I already have account</a>
+    </form>
+
+    <script>
+        var pass1 = document.getElementById('id_password1');
+        var pass2 = document.getElementById('id_password2');
+        var btn = document.getElementById('show');
+        function show_hide() {
+            if (pass1.type === 'password') {
+                btn.innerHTML = 'visibility_off'
+                pass1.setAttribute('type', 'text')
+                pass2.setAttribute('type', 'text')
+
+            }
+            else {
+                btn.innerHTML = 'visibility'
+
+                pass1.setAttribute('type', 'password')
+                pass2.setAttribute('type', 'password')
+            }
+
+        }
+    </script>
+    {% else %}
+    <script>
+        window.location.href = '/'
+    </script>
+    {% endif %}
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'tasks' %}" class="btn-green"><-Back</a>
+        <table>
+            <div class="title-info" style="display: flex; justify-content:center">
+                <p><mark
+                        style="border-radius: 10px; padding:10px; font-size: 22px; background-color: #123;">{{detail.name}}</mark>
+                    Task Deatils</p>
+            </div>
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <td>{{detail.user}}</td>
+
+                <tr>
+                    <th>Complete?</th>
+                    <td>{{detail.complete}}</td>
+
+                </tr>
+                <tr>
+                    <th>created in</th>
+                    <td>{{detail.date}}</td>
+
+                </tr>
+                <tr>
+                    <th>Will complete in</th>
+                    <td>{{detail.willdate}}</td>
+
+                </tr>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                </tr>
+                <tr>
+                <tr>
+                    <td colspan="5">
+                        <a href="{% url 'delete_task' pk=detail.id %}" class="btn btn-red">Delete</a>
+                        <a href="{% url 'update_task' pk=detail.id %}" class="btn btn-blue">Update</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        {% endblock %}

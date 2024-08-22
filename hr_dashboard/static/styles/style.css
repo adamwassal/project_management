@@ -1,0 +1,323 @@
+* {
+    padding: 0;
+    margin: 0;
+    color: white;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: black;
+    display: flex;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile h2 {
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+.img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: white;
+}
+
+.img img {
+    width: 100%;
+}
+
+.menu {
+    display: flex;
+    background-color: #123;
+    width: 50px;
+    height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+    transition: 0.3s;
+    flex-direction: column;
+}
+
+.menu:hover {
+    z-index: 1000;
+    width: 280px;
+}
+
+ul {
+    list-style: none;
+    position: relative;
+    height: 95%;
+}
+
+ul li a {
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    transition: .3s;
+}
+
+ul li a:hover, .active,.data-info .box:hover, td:hover {
+    background-color: rgb(58, 58, 56);
+}
+
+.logout {
+    bottom: 0;
+    width: 95%;
+}
+
+
+.logout:hover {
+    background-color: rgb(181, 48, 48);
+}
+
+ul li a i {
+    font-size: 30px;
+}
+
+.content {
+    width: 100%;
+    margin: 10px;
+}
+
+.title-info {
+    background-color: #0481ff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 8px;
+    margin: 10px 0;
+    
+}
+
+.data-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.data-info .box {
+    background-color: #123;
+    height: 150px;
+    flex-basis: 150px;
+    flex-grow: 1;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    transition: 0.3s;
+}
+.data-info .box i {
+    font-size: 40px;
+}
+
+.data-info .box .data {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.data-info .box .data p {
+    font-size: 22px;
+}
+
+.data-info .box .data span {
+    font-size: 30px;
+}
+
+
+table {
+    width: 100%;
+    text-align: center;
+    border: 8px;
+}
+td, th {
+    background-color: #123;
+    height: 40px;
+    border-radius: 8px;
+}
+
+th {
+    background-color: #0481ff;
+}
+
+.price, .count {
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.count {
+    background-color: gold;
+    color: black;
+}
+
+.shortcuts {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.shortcuts .shortcut {
+    text-decoration: none;
+    font-size: 22px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.shortcuts .shortcut a {
+    background-color: #123;
+    padding: 10px;
+    margin: 10px;
+}
+
+.shortcuts .shortcut a:hover{
+    border: #0481ff solid 2px;
+}
+
+table .title-info {
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.btn {
+    background-color: black;
+    width: 20%;
+    padding: 10px;
+    margin: 10px;
+    margin-top: 10%;
+    border: none;
+    outline: none;
+}
+
+.btn:hover {
+    border: #ff0404 solid 2px;
+}
+
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    color: black;
+}
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: black;
+
+}
+.form-group label {
+    width: 30%;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    color: black;
+
+}
+.form-group input,
+.form-group select,
+.form-group textarea, 
+.form-group option {
+    width: 70%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: black;
+
+}
+.form-group textarea {
+    resize: vertical;
+}
+
+
+.ud {
+    display: block;
+    width: fit-content;
+    background-color: rgb(157, 68, 68);
+    color: white;
+    padding: 12px 20px;
+    margin: 20px auto 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+.ud:hover {
+    background-color: rgb(130, 56, 56);
+}
+
+.btn-blue {
+    color: white;
+    background-color: #0481ff;
+}
+
+.btn-red {
+    color: white;
+    background-color: red;
+}
+
+.btn-green {
+    color: white;
+    background-color: green;
+}
+
+
+
+#show {
+    padding: 4px;
+}
+
+
+
+/* darkmode */
+#body {
+    background-color: white;
+}
+
+#body .data-info .box {
+    background-color: #34506c;
+}
+
+#body .data-info .box i, #body .data-info .box p {
+    color: rgb(233, 232, 232);
+}
+#menu {
+    background-color: cadetblue;
+    color: black;
+}
+
+#title-info {
+    background-color: #34506c;
+}
+
+#search_input {
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    color: black;
+    font-size: 22px;
+    margin-right: 20px;
+}

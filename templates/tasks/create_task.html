@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <center>
+    <style>
+      .form-group .form-error .errorlist li {
+        color: red;
+      }
+    </style>
+
+    <div class="form-container">
+      <form method="POST">
+        <h2 style="color: black;">Add new task</h2>
+        <br />
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+              <div class="form-error">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <script>
+                var select = document.getElementById('userr')
+                var options = select.querySelectorAll('option')
+                {% if not user.is_superuser %}
+                
+                for (let i = 0; i < options.length; i++) {
+                    select.removeChild(options[i])
+                }
+
+                    
+                var newoption = document.createElement("option")
+                newoption.textContent = "{{user.username}}"
+                newoption.value = "{{user.username}}"
+                select.appendChild(newoption)
+                {% endif %}
+                select.value = "{{user.username}}"
+
+            </script>
+        <input type="submit" class="ud" value="Create" />
+      </form>
+    </div>
+  </center>
+{% endblock %}

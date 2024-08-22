@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if request.user.is_superuser %}
+    <table>
+      <form action="" method="post">
+        {% csrf_token %}
+        <div class="title-info">
+          <p>Tasks</p>
+          <input type="text" id="search_input" onkeyup="search()" placeholder="Search for names.." title="Type in a name" />
+          <div id="user_total" style="text-align: center;background-color: cadetblue; padding:10px">{{ task_count }}
+            Tasks</div>
+
+          <i class="material-icons">table_view</i>
+        </div>
+        <a href="{% url 'tasks' %}" class="ud btn-blue">Your tasks</a>
+        <a href="{% url 'create_task' %}" class="ud">Add Task</a>
+        {% if object_list %}
+          <center>
+            <div style="display: flex; flex-direction: column; background-color: #123; width: 200px; padding: 20px;">
+              <h2>Filter</h2>
+              <select name="" id="filter_select" onchange="filtering()" style="color: rgb(255, 255, 255); cursor:pointer; background:rgb(19, 15, 128); margin-top: 20px; padding: 2px 20px">
+                <option value="no" selected="selected" style="color: black;">---------</option>
+                <option value="complete" style="color: rgb(255, 255, 255);">Complete</option>
+                <option value="uncomplete" style="color: rgb(255, 255, 255);">Uncomplete</option>
+              </select>
+            </div>
+            <div style="display: flex; flex-direction: column; background-color: #123; width: 200px; padding: 20px;">
+              <h2>CheckBoxes</h2>
+              <select name="selection" id="selection" style="color: rgb(255, 255, 255); cursor:pointer; background:rgb(19, 15, 128); margin-top: 20px; padding: 2px 20px">
+                <option value="no" selected="selected" style="color: black;">---------</option>
+                <option value="delete" style="color: rgb(255, 255, 255);">Delete</option>
+                <option value="complete" style="color: rgb(255, 255, 255);">Complete</option>
+              </select>
+              <button type="submit" style="padding: 10px; cursor:pointer; background-color: red;" class="ud">Confirm</button>
+            </div>
+          </center>
+        {% endif %}
+
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" id="check_all" />
+            </th>
+            <th>User</th>
+            <th>Name</th>
+            <th>Complete</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          {% for i in object_list %}
+            {% if i.user in users %}
+              <tr>
+                <td>
+                  <input type="checkbox" id="tasks" name="tasks" value="{{ i.id }}" />
+                </td>
+                <td>{{ i.user }}</td>
+                <td class="name">{{ i.name }}</td>
+                <td class="complete">{{ i.complete }}</td>
+                <td>{{ i.date }}</td>
+
+                <td>
+                  <a href="{% url 'task_detail' pk=i.id %}" class="count" style="text-decoration: none;">Details</a>
+                </td>
+              </tr>
+              {% else %}
+              <script>
+                window.location.href = '{% url "deletetaskfast" pk=i.id %}'
+              </script>
+            {% endif %}
+            
+          {% endfor %}
+        </tbody>
+      </form>
+    </table>
+    <script>
+      const checkbox = document.getElementById('check_all')
+      const checkboxs = document.querySelectorAll('#tasks')
+      
+      checkbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+          for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = true
+          }
+        } else {
+          for (var i = 0; i < checkboxs.length; i++) {
+            checkboxs[i].checked = false
+          }
+        }
+      })
+      
+      function filtering() {
+        let select = document.getElementById('filter_select').value
+        let tbody = document.getElementById('tbody')
+        let tr = tbody.getElementsByTagName('tr')
+      
+        function f(state) {
+          for (let i = 0; i < tr.length; i++) {
+            let td = tr[i].getElementsByClassName('complete')[0]
+            if (td) {
+              let txtValue = td.textContent || td.innerText
+              if (Array.isArray(state)) {
+                // If state is an array, check if txtValue is in the array
+                if (state.includes(txtValue)) {
+                  tr[i].style.display = ''
+                } else {
+                  tr[i].style.display = 'none'
+                }
+              } else {
+                // If state is a single value, compare directly
+                if (txtValue === state) {
+                  tr[i].style.display = ''
+                } else {
+                  tr[i].style.display = 'none'
+                }
+              }
+            }
+          }
+        }
+      
+        if (select === 'complete') {
+          f('True')
+        } else if (select === 'uncomplete') {
+          f('False')
+        } else {
+          f(['True', 'False'])
+        }
+      }
+    </script>
+  {% else %}
+    <script>
+      alert("You don't admin user")
+      window.location.href = '{% url "tasks" %}'
+    </script>
+  {% endif %}
+{% endblock %}

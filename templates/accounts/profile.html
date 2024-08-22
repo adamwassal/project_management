@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    td,
+    th {
+        padding: 10px;
+    }
+</style>
+<div class="data-info">
+    <div class="form-container" style="display: flex; flex-direction: column; align-items: center;">
+        <div
+            style="display: flex;background-color: white; border-radius: 50%; flex-direction: column; align-items: center;">
+            <img src="{% static 'images/user.png' %}" alt="Profile" width="100">
+            <h2 style="color: black;">{{request.user.username}}</h2>
+        </div>
+        <div style="margin-top: 10px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{request.user.username|default:'No set'}}</td>
+                    </tr>
+                    <tr>
+                        <th>First name</th>
+                        <td>{{request.user.first_name|default:'No set'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Last name</th>
+                        <td>{{request.user.last_name|default:'No set'}}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{request.user.email|default:'No set'}}</td>
+                    </tr>
+                </thead>
+            </table>
+            <a href="#" class="ud" id="edit_btn" onclick="edit_show()">Edit profile</a>
+            <a href="{% url 'change_password' %}" class="ud" id="change_pass_btn">Change password</a>
+            <form action="" id="cform" method="post" style="margin-top: 10px; display:none;">
+                {% csrf_token %}
+                <div class="form-group"><label for="email">Email</label> <input type="email" name="email" id=""
+                        placeholder="New Email" value="{{request.user.email}}">
+                </div>
+                <div class="form-group"><label for="fname">First name</label> <input type="text" name="fname" id=""
+                        placeholder="First name" value="{{request.user.first_name}}">
+                </div>
+                <div class="form-group"><label for="lname">Last name</label> <input type="text" name="lname" id=""
+                        placeholder="Last name" value="{{request.user.last_name}}">
+                </div>
+                <div style="display: flex;">
+                    <button type="submit" class="ud">Save</button>
+                    <a href="#" class="ud btn-blue" id="cancel" onclick="cancel()">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    var edit_btn = document.getElementById('edit_btn');
+    var pass_btn = document.getElementById('change_pass_btn');
+    var form = document.getElementById('cform');
+    var cancel_btn = document.getElementById('cancel');
+
+    function edit_show() {
+        edit_btn.style.display = 'none';
+        pass_btn.style.display = 'none';
+        form.style.display = 'block';
+    }
+    function cancel() {
+        edit_btn.style.display = 'block';
+        pass_btn.style.display = 'block';
+        form.style.display = 'none';
+    }
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    {% if request.user.is_superuser %}
+    <div class="delete_box">
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <h2 class="btn">are you sure to delete "{{delete.name}}" employee!</h2>
+            <input type="submit" class="ud" style="background-color: rgb(157, 68, 68); cursor: pointer;"
+                value="Delete" />
+            <a href="{% url 'detail_employee' pk=delete.id %}" style="cursor: pointer; background-color: #0481ff;"
+                class="ud">NO Close</a>
+
+        </form>
+    </div>
+    {% else %}
+    <script>
+        alert('You don\' admin user')
+        window.location.href = '/'
+    </script>
+    {% endif %}
+</center>
+{% endblock %}

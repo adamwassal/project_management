@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-container" id="form-container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="profits">Total Company profits</label>
+            <input type="number" name="profits" id="profits" required>
+        </div>
+        <div class="form-group">
+            <label for="water">Water</label>
+            <input type="number" name="water" id="water" required>
+        </div>
+        <div class="form-group">
+            <label for="gas">Gas</label>
+            <input type="number" name="gas" id="gas" required>
+        </div>
+        <div class="form-group">
+            <label for="transport">Transport</label>
+            <input type="number" name="transport" id="transport" required>
+        </div>
+        <button type="submit" class="ud">Calculate</button>
+    </form>
+</div>
+
+{% if profits %}
+<table style="margin-top: 20px;" id="table">
+    <thead>
+        <tr>
+            <th>Earn</th>
+            <td>{{x}} EGP</td>
+        </tr>
+        <tr>
+            <th>Salaries</th>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th colspan="2">Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in employees_salaries %}
+                        <tr>
+                            <td>{{i.name}}</td>
+                            <td colspan="2">{{i.salary}} EGP</td>
+                        </tr>
+                        {% endfor %}
+                        <th colspan="2">
+                            Total
+                        <th>{{total}} EGP</th>
+                        </th>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Other costs</th>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Cost</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Water</td>
+                            <td>{{y}} EGP</td>
+                        </tr>
+                        <tr>
+                            <td>Gas</td>
+                            <td>{{z}} EGP</td>
+                        </tr>
+                        <tr>
+                            <td>Transport</td>
+                            <td>{{r}} EGP</td>
+                        </tr>
+                        <th>
+                            Total
+                        <th>{{to}} EGP
+                        </th>
+                        </th>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th>Net profit</th>
+            <th>{{t}} EGP {% if t < 0 %} <p class="btn-red count">Loser</p>
+                    {% endif %}</th>
+        </tr>
+    </thead>
+</table>
+<div style="display: flex; justify-content: center;" id="cc">
+
+    <div class="chart" style=" width: 20%;"><canvas id="chart" width="500" height="100"
+            data-titlechart="Tasks"></canvas></div>
+</div>
+<a href="{% url 'companyprofits' %}" class="ud" id="me"
+    >Clear</a>
+
+<script>
+    var canvas = document.getElementById('chart');
+    var ctx = document.getElementById('chart').getContext('2d');
+    var data = {{ data| safe}};  // Pass data to JavaScript
+    // Access the custom data attribute
+    var titlechart = canvas.dataset.titlechart;
+    console.log(titlechart); // Debugging: Check if the titlechart variable is correct
+
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: titlechart,
+                data: data.data,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+</script>
+
+{% endif %}
+
+{% endblock %}

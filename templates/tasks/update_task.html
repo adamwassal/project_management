@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    <style>
+        .form-group .form-error .errorlist li {
+            color: red;
+        }
+    </style>
+    <div class="form-container">
+
+        <form method="POST">
+            <h2 style="color: black;">Update {{update.name}} Task data</h2>
+            <br>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-error">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            <script>
+                document.getElementById('userr').value = "{{update.user}}"
+                {% if request.user.is_superuser %}
+                document.getElementById('userr').removeAttribute('disabled')
+                {% else %}
+                document.getElementById('userr').setAttribute('disabled', 'true')
+                {% endif %}
+            </script>
+            {% endfor %}
+            <input type="submit" class="ud" value="Update" />
+        </form>
+    </div>
+
+</center>
+{% endblock %}

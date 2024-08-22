@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    <style>
+        .form-group .form-error .errorlist li {
+            color: red;
+        }
+    </style>
+
+    <div class="form-container">
+        {% if request.user.is_superuser %}
+        {% if not data %}
+        <form method="POST" enctype="multipart/form-data">
+            <h2 style="color: black;">Config the company data</h2>
+            <br>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-error">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" class="ud" value="Create" />
+        </form>
+        {% endif %}
+        {% endif %}
+        <div class="data" style="display: flex; flex-direction: column; color: black; align-items: center;">
+            {% for i in data %}
+            <img src="{{i.logo.url}}" width="250" style="border-radius: 50%;" alt="">
+            <h1 style="color: black;">* {{i.company_name}} *</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th>Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{i.details}}
+                        </td>
+                        <td>
+                            {{i.address}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Manager</th>
+                        <th>Employees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            {{i.manager_name}}
+                        </td>
+                        <td>
+                            {{employee_count}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% if request.user.is_superuser %}
+
+            <a href="{% url 'companyupdate' pk=i.id %}" class="ud">Update Data</a>
+            {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+</center>
+
+{% endblock %}

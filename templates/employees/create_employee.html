@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+{% if request.user.is_superuser %}
+    <style>
+        .form-group .form-error .errorlist li {
+            color: red;
+        }
+    </style>
+
+    <div class="form-container">
+
+        <form method="POST" enctype="multipart/form-data">
+            <h2 style="color: black;">Add new employee</h2>
+            <br>
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                <div class="form-error">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <input type="submit" class="ud" value="Create" />
+        </form>
+    </div>
+
+    {% else %}
+    <script>
+        alert('You don\' admin user')
+        window.location.href = '/'
+    </script>
+</center>
+
+{% endif %}
+{% endblock %}

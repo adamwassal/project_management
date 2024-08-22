@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if request.user.is_superuser %}
+    <table>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Date</th>
+          <th>Email</th>
+          <th>Accept?</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        {% for i in object_list %}
+          {% if i.user in users %}
+            <tr>
+              <td>{{ i.user }}</td>
+              <td>{{ i.email }}</td>
+              <td>{{ i.date }}</td>
+
+              {% if not i.accept %}
+                <form method="post" action="{% url 'updatevacation' pk=i.id %}">
+                  {% csrf_token %}
+                  <td>
+                    <button class="ud" type="submit">{{ i.accept|default:'Accept' }}</button>
+                  </td>
+                </form>
+              {% else %}
+                <td>{{ i.accept }}</td>
+              {% endif %}
+            </tr>
+
+            {% if i.date == now %}
+              <script>
+                window.location.href = '{% url "deletevacation" pk=i.id %}'
+              </script>
+            {% endif %}
+          {% else %}
+            <script>
+              window.location.href = "{% url 'deletevacation' pk=i.id %}"
+            </script>
+          {% endif %}
+        {% empty %}
+          <td colspan="7">No Requests</td>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <script>
+      alert("You don' admin user")
+      window.location.href = '/'
+    </script>
+  {% endif %}
+
+  <!--  <script>
+    const checkbox = document.getElementById('check_all')
+    const checkboxs = document.querySelectorAll('#employees')
+
+    checkbox.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            for (var i = 0; i < checkboxs.length; i++) {
+                checkboxs[i].checked = true
+            }
+
+        } else {
+            for (var i = 0; i < checkboxs.length; i++) {
+                checkboxs[i].checked = false
+            }
+
+        }
+    })
+
+    function performSearch() {
+        var input, filter, tbody, tr, td, i, txtValue;
+        input = document.getElementById("search_input");
+        filter = input.value.toUpperCase();
+        tbody = document.getElementById("tbody");
+        tr = tbody.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+
+            td = tr[i].getElementsByClassName("name")[0]; // استخدام getElementsByClassName للحصول على العنصر المناسب
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+    }
+</script>  -->
+{% endblock %}

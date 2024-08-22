@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+<div class="delete_box">
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <h2 class="btn">are you sure to delete "{{delete.name}}" Task!</h2>
+        <input type="submit" class="ud" style="background-color: rgb(157, 68, 68); cursor: pointer;" value="Delete"/>
+        <a href="{% url 'task_detail' pk=delete.id %}" style="cursor: pointer; background-color: #0481ff;" class="ud">NO Close</a>
+    
+    </form>
+</div>
+</center>
+{% endblock %}

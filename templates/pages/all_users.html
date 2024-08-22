@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if request.user.is_superuser %}
+<div class="title-info">
+    <p>Users</p>
+    <input type="text" id="search_input" onkeyup="search()" placeholder="Search usernames.." title="Type in a name">
+
+    <div id="user_total" style="text-align: center;background-color: cadetblue; padding:10px">{{all_users}} users</div>
+    <i class="material-icons">diversity_3</i>
+</div>
+<div style="display: flex; align-items:center">
+    <div class="chart" style=" width: 20%; height: 20%; background-color: #123;"><canvas id="all_users" width="500"
+            height="100" data-titlechart="Tasks"></canvas></div>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IS ADMIN?</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            {% for i in users %}
+            <tr>
+                {% if request.user == i %}
+                <td class="name">{{i}} <span class="count">(YOU)</span></td>
+                {% else %}
+                <td class="name">{{i}}</td>
+                <td></td>
+                {% endif %}
+                {% if i.is_superuser %}
+                <td><i class="material-icons" style="color: #0481ff;">star</i></td>
+                {% endif %}
+                <td>{{i.email}}</td>
+                {% if request.user == i %}
+                <td><a href="{% url 'profile'%}" class="btn">Profile</a></td>
+                {% else %}
+                <td><a href="{% url 'user_profile' pk=i.id %}" class="btn">Profile</a></td>
+                {% endif %}
+                
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <script>
+        alert('You don\' admin user')
+        window.location.href = '/'
+    </script>
+    {% endif %}
+</div>
+
+
+
+<script>
+    var canvas = document.getElementById('all_users');
+    var ctx = document.getElementById('all_users').getContext('2d');
+    var data = {{ data| safe}};  // Pass data to JavaScript
+    // Access the custom data attribute
+    var titlechart = canvas.dataset.titlechart;
+    console.log(titlechart); // Debugging: Check if the titlechart variable is correct
+
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: data.labels,
+            datasets: [{
+                label: titlechart,
+                data: data.data,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 4
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    function search() {
+        var input, filter, tbody, tr, td, i, txtValue;
+        input = document.getElementById("search_input");
+        filter = input.value.toUpperCase();
+        tbody = document.getElementById("tbody");
+        tr = tbody.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByClassName("name")[0]; // استخدام getElementsByClassName للحصول على العنصر المناسب
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+{% endblock %}

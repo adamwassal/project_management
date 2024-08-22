@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% for i in cd %}
+        {{pagetitle}}| {{i.company_name|default:'Set the comany data'}}
+        {% endfor %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/animate/animate.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            left: 70%;
+            background-color: #123;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            top: 0;
+            /* Adjust to align with the top of the button */
+            /* Adjust to align the dropdown content next to the button */
+        }
+
+        .dropdown-content a {
+            float: none;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .logout {
+            position: absolute;
+            bottom: 0;
+            width: 95%;
+        }
+
+
+        .logout:hover {
+            background-color: rgb(181, 48, 48);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu" style="position: fixed;">
+        <ul>
+            <li class="profile">
+                <div class="img">
+                    <img src="{% static 'images/user.png' %}" alt="Profile" width="100">
+                </div>
+                <a href="{% url 'profile' %}">
+                    <h2>{{ user.username }}</h2>
+                </a>
+            </li>
+            <li class="link">
+                <a href="{% url 'dashboard' %}">
+                    <i class="material-icons">dashboard</i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            {% if request.user.is_superuser %}
+
+            <li class="link dropdown">
+                <a href="{% url 'employees' %}" class="dropbtn">
+                    <i class="material-icons">group</i>
+                    <p>Employees</p>
+                </a>
+                <div class="dropdown-content">
+                    <a href="{% url 'create_employee' %}">Add Employee</a>
+                </div>
+            </li>
+            {% endif %}
+            <li class="link dropdown">
+                <a href="{% url 'tasks' %}" class="dropbtn">
+                    <i class="material-icons">table_view</i>
+                    <p>Tasks</p>
+                </a>
+                <div class="dropdown-content">
+                    <a href="{% url 'create_task' %}">Add task</a>
+                </div>
+            </li>
+            {% if request.user.is_superuser %}
+
+
+            <li class="link">
+                <a href="{% url 'all_users' %}">
+                    <i class="material-icons">diversity_3</i>
+                    <p>Users</p>
+                </a>
+            </li>
+
+            <li class="link">
+                <a href="{% url 'companyprofits' %}">
+                    <i class="material-icons">attach_money</i>
+                    <p>Profits</p>
+                </a>
+            </li>
+
+
+            <li class="link">
+                <a href="{% url 'avr' %}">
+                    <i class="material-icons">event</i>
+                    <p>Vacations</p>
+                </a>
+            </li>
+            {% endif %}
+            <li class="link">
+                <a href="{% url 'vacation' %}">
+                    <i class="material-icons">calendar_today</i>
+                    <p>make Vacation</p>
+                </a>
+            </li>
+            <li class="link">
+                <a href="{% url 'company' %}">
+                    <i class="material-icons">{% if request.user.is_superuser %}settings{% else %}apartment{% endif %}</i>
+                    <p>Company</p>
+                </a>
+            </li>
+            <li class="link">
+                <a href="{% url 'logout' %}" class="logout">
+                    <i class="material-icons">logout</i>
+                    <p>Logout</p>
+                </a>
+            </li>
+            {% if request.user.is_superuser %}
+            <li class="link">
+                <a href="/admin/">
+                    <i class="material-icons">star</i>
+                    <p>Admin</p>
+                </a>
+            </li>
+            {% endif %} 
+            <li class="link">
+                <a href="#" id="b" onclick="ld()">
+                    <i class="material-icons" id="val" style="color:yellow">light_mode</i>
+                    <p>Dark/Light</p>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    <div class="content" style="padding-left: 100px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script>
+        var val = document.getElementById('val')
+        var title = document.getElementsByClassName('title-info')
+        var chart = document.getElementsByClassName('chart')
+        var td = document.querySelectorAll('td')
+
+        var body = document.querySelector('body')
+        var menu = document.querySelector('.menu')
+        var th = document.querySelectorAll('th')
+
+        // Load mode from local storage
+        document.addEventListener('DOMContentLoaded', function () {
+            var mode = localStorage.getItem('mode') || 'light_mode';
+            applyMode(mode);
+        });
+
+        function ld() {
+            var currentMode = val.innerHTML;
+            var newMode = currentMode === 'light_mode' ? 'dark_mode' : 'light_mode';
+            applyMode(newMode);
+            localStorage.setItem('mode', newMode);
+        }
+
+        function applyMode(mode) {
+            if (mode === 'dark_mode') {
+                val.innerHTML = 'dark_mode';
+                val.style.color = 'black';
+                body.setAttribute('id', 'body');
+                menu.setAttribute('id', 'menu');
+                for (var i = 0; i < title.length; i++) {
+                    title[i].setAttribute('id', 'title-info');
+                }
+                for (var x = 0; x < chart.length; x++) {
+                    chart[x].style.backgroundColor = 'white';
+                }
+                for (var i = 0; i < td.length; i++) {
+                    td[i].style.backgroundColor = 'whitesmoke';
+                    td[i].style.color = 'black';
+                }
+                for (var i = 0; i < th.length; i++) {
+                    th[i].style.backgroundColor = '#A8A8A8';
+                    th[i].style.color = 'black';
+                }
+            } else {
+                val.innerHTML = 'light_mode';
+                val.style.color = 'yellow';
+                body.setAttribute('id', '');
+                menu.setAttribute('id', '');
+                for (var i = 0; i < title.length; i++) {
+                    title[i].setAttribute('id', '');
+                }
+                for (var i = 0; i < chart.length; i++) {
+                    chart[i].style.backgroundColor = '#123';
+                }
+                for (var i = 0; i < td.length; i++) {
+                    td[i].style.backgroundColor = '#123';
+                    td[i].style.color = 'white';
+                }
+                for (var i = 0; i < th.length; i++) {
+                    th[i].style.backgroundColor = '#0481ff';
+                    th[i].style.color = 'white';
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
