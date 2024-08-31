@@ -16,6 +16,7 @@
 <div style='display:flex'>
   <img src='https://i.ibb.co/92pQkGp/Screenshot-from-2024-08-31-16-25-15.png' style='width:700px'/>
   <img src='https://i.ibb.co/3d1m8kV/Screenshot-from-2024-08-31-16-26-07.png' style='width:700px'/>
+  <br/>
   <mark>..and update, delete pages..</mark>
 </div>
 
@@ -23,6 +24,7 @@
 <div style='display:flex'>
   <img src='https://i.ibb.co/NSqJM9M/Screenshot-from-2024-08-31-17-20-44.png' style='width:700px'/>
   <img src='https://i.ibb.co/Gc4twB6/Screenshot-from-2024-08-31-17-20-49.png' style='width:700px'/>
+    <br/>
   <mark>..and update, delete pages..</mark>
 </div>
 
