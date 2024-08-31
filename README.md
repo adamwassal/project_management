@@ -1,3 +1,9 @@
+<style>
+  img {
+    width: 100px;
+  }
+</style>
+
 # Preview
 <h3>Authentication</h3>
 <div style='display:flex'>
