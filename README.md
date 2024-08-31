@@ -1,13 +1,9 @@
-<style>
-  img {
-    width: 100px;
-  }
-</style>
+
 
 # Preview
 <h3>Authentication</h3>
 <div style='display:flex'>
-  <img src='https://i.ibb.co/xHN58z4/Screenshot-from-2024-08-31-16-22-57.png'/>
+  <img src='https://i.ibb.co/xHN58z4/Screenshot-from-2024-08-31-16-22-57.png' style='width:100px'/>
   <img src='https://i.ibb.co/Xsyb41B/Screenshot-from-2024-08-31-16-23-10.png'/>
 </div>
 
